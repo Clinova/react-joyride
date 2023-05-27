@@ -1485,12 +1485,11 @@ var JoyrideOverlay = /*#__PURE__*/function (_React$Component) {
       isScrolling: false,
       showSpotlight: true
     });
-    _defineProperty(_assertThisInitialized(_this), "getSpotlightStyles", function (querySelector) {
+    _defineProperty(_assertThisInitialized(_this), "getSpotlightStyles", function (querySelector, spotlightPadding) {
       var showSpotlight = _this.state.showSpotlight;
       var _this$props = _this.props,
         disableScrollParentFix = _this$props.disableScrollParentFix,
         spotlightClicks = _this$props.spotlightClicks,
-        spotlightPadding = _this$props.spotlightPadding,
         styles = _this$props.styles;
       var element = getElement(querySelector);
       var elementRect = getClientRect(element);
@@ -1638,7 +1637,8 @@ var JoyrideOverlay = /*#__PURE__*/function (_React$Component) {
         styles = _this$props4.styles,
         target = _this$props4.target,
         _this$props4$spotligh = _this$props4.spotlights,
-        spotlights = _this$props4$spotligh === void 0 ? [] : _this$props4$spotligh;
+        spotlights = _this$props4$spotligh === void 0 ? [] : _this$props4$spotligh,
+        spotlightPadding = _this$props4.spotlightPadding;
       if (disableOverlay || lifecycle !== LIFECYCLE.TOOLTIP) {
         return null;
       }
@@ -1654,12 +1654,14 @@ var JoyrideOverlay = /*#__PURE__*/function (_React$Component) {
         pointerEvents: mouseOverSpotlight ? 'none' : 'auto'
       }, baseStyles);
       var spotlight = placement !== 'center' && showSpotlight && /*#__PURE__*/React.createElement(JoyrideSpotlight, {
-        styles: this.getSpotlightStyles(target)
+        styles: this.getSpotlightStyles(target, spotlightPadding)
       });
-      var spotlightElements = spotlights.map(function (querySelector) {
+      var spotlightElements = spotlights.map(function (_ref) {
+        var selector = _ref.selector,
+          padding = _ref.padding;
         return /*#__PURE__*/React.createElement(JoyrideSpotlight, {
-          key: querySelector,
-          styles: _this3.getSpotlightStyles(querySelector)
+          key: selector,
+          styles: _this3.getSpotlightStyles(selector, padding !== null && padding !== void 0 ? padding : 0)
         });
       });
 
@@ -1676,10 +1678,6 @@ var JoyrideOverlay = /*#__PURE__*/function (_React$Component) {
         }, spotlightElements);
         delete stylesOverlay.backgroundColor;
       }
-      console.log({
-        spotlights: spotlights,
-        spotlightElements: spotlightElements
-      });
       return /*#__PURE__*/React.createElement("div", {
         className: "react-joyride__overlay",
         style: stylesOverlay,

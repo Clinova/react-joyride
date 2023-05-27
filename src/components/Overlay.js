@@ -100,9 +100,9 @@ export default class JoyrideOverlay extends React.Component {
     this.scrollParent.removeEventListener('scroll', this.handleScroll);
   }
 
-  getSpotlightStyles = querySelector => {
+  getSpotlightStyles = (querySelector, spotlightPadding) => {
     const { showSpotlight } = this.state;
-    const { disableScrollParentFix, spotlightClicks, spotlightPadding, styles } = this.props;
+    const { disableScrollParentFix, spotlightClicks, styles } = this.props;
     const element = getElement(querySelector);
     const elementRect = getClientRect(element);
     const isFixedTarget = hasPosition(element);
@@ -188,6 +188,7 @@ export default class JoyrideOverlay extends React.Component {
       styles,
       target,
       spotlights = [],
+      spotlightPadding,
     } = this.props;
 
     if (disableOverlay || lifecycle !== LIFECYCLE.TOOLTIP) {
@@ -209,11 +210,11 @@ export default class JoyrideOverlay extends React.Component {
     };
 
     let spotlight = placement !== 'center' && showSpotlight && (
-      <Spotlight styles={this.getSpotlightStyles(target)} />
+      <Spotlight styles={this.getSpotlightStyles(target, spotlightPadding)} />
     );
 
-    let spotlightElements = spotlights.map(querySelector => (
-      <Spotlight key={querySelector} styles={this.getSpotlightStyles(querySelector)} />
+    let spotlightElements = spotlights.map(({ selector, padding }) => (
+      <Spotlight key={selector} styles={this.getSpotlightStyles(selector, padding ?? 0)} />
     ));
 
     // Hack for Safari bug with mix-blend-mode with z-index
