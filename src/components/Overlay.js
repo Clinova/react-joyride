@@ -38,6 +38,7 @@ export default class JoyrideOverlay extends React.Component {
     spotlightPadding: PropTypes.number,
     styles: PropTypes.object.isRequired,
     target: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
+    spotlights: PropTypes.array,
   };
 
   componentDidMount() {
@@ -99,11 +100,11 @@ export default class JoyrideOverlay extends React.Component {
     this.scrollParent.removeEventListener('scroll', this.handleScroll);
   }
 
-  get spotlightStyles() {
-    const { showSpotlight } = this.state;
-    const { disableScrollParentFix, spotlightClicks, spotlightPadding, styles, target } =
+  getSpotlightStyles = (querySelector) => {
+    const {showSpotlight} = this.state;
+    const {disableScrollParentFix, spotlightClicks, spotlightPadding, styles} =
       this.props;
-    const element = getElement(target);
+    const element = getElement(querySelector);
     const elementRect = getClientRect(element);
     const isFixedTarget = hasPosition(element);
     const top = getElementPosition(element, spotlightPadding, disableScrollParentFix);
@@ -118,8 +119,8 @@ export default class JoyrideOverlay extends React.Component {
       top,
       transition: 'opacity 0.2s',
       width: Math.round(elementRect.width + spotlightPadding * 2),
-    };
-  }
+    }
+  };
 
   handleMouseMove = e => {
     const { mouseOverSpotlight } = this.state;
@@ -201,8 +202,12 @@ export default class JoyrideOverlay extends React.Component {
     };
 
     let spotlight = placement !== 'center' && showSpotlight && (
-      <Spotlight styles={this.spotlightStyles} />
+      <Spotlight styles={this.getSpotlightStyles(this.props.target)} />
     );
+
+    const spotlights = this.props.spotlights.map(querySelector => (
+      <Spotlight key={querySelector} styles={this.getSpotlightStyles(querySelector)} />
+    ))
 
     // Hack for Safari bug with mix-blend-mode with z-index
     if (getBrowser() === 'safari') {
@@ -215,6 +220,7 @@ export default class JoyrideOverlay extends React.Component {
     return (
       <div className="react-joyride__overlay" style={stylesOverlay} onClick={onClickOverlay}>
         {spotlight}
+        {spotlights}
       </div>
     );
   }
