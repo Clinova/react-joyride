@@ -34,11 +34,11 @@ export default class JoyrideOverlay extends React.Component {
     lifecycle: PropTypes.string.isRequired,
     onClickOverlay: PropTypes.func.isRequired,
     placement: PropTypes.string.isRequired,
+    spotlights: PropTypes.array,
     spotlightClicks: PropTypes.bool.isRequired,
     spotlightPadding: PropTypes.number,
     styles: PropTypes.object.isRequired,
     target: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
-    spotlights: PropTypes.array,
   };
 
   componentDidMount() {
@@ -100,10 +100,9 @@ export default class JoyrideOverlay extends React.Component {
     this.scrollParent.removeEventListener('scroll', this.handleScroll);
   }
 
-  getSpotlightStyles = (querySelector) => {
-    const {showSpotlight} = this.state;
-    const {disableScrollParentFix, spotlightClicks, spotlightPadding, styles} =
-      this.props;
+  getSpotlightStyles = querySelector => {
+    const { showSpotlight } = this.state;
+    const { disableScrollParentFix, spotlightClicks, spotlightPadding, styles } = this.props;
     const element = getElement(querySelector);
     const elementRect = getClientRect(element);
     const isFixedTarget = hasPosition(element);
@@ -119,7 +118,7 @@ export default class JoyrideOverlay extends React.Component {
       top,
       transition: 'opacity 0.2s',
       width: Math.round(elementRect.width + spotlightPadding * 2),
-    }
+    };
   };
 
   handleMouseMove = e => {
@@ -180,8 +179,16 @@ export default class JoyrideOverlay extends React.Component {
 
   render() {
     const { mouseOverSpotlight, showSpotlight } = this.state;
-    const { disableOverlay, disableOverlayClose, lifecycle, onClickOverlay, placement, styles } =
-      this.props;
+    const {
+      disableOverlay,
+      disableOverlayClose,
+      lifecycle,
+      onClickOverlay,
+      placement,
+      styles,
+      target,
+      spotlights,
+    } = this.props;
 
     if (disableOverlay || lifecycle !== LIFECYCLE.TOOLTIP) {
       return null;
@@ -202,25 +209,26 @@ export default class JoyrideOverlay extends React.Component {
     };
 
     let spotlight = placement !== 'center' && showSpotlight && (
-      <Spotlight styles={this.getSpotlightStyles(this.props.target)} />
+      <Spotlight styles={this.getSpotlightStyles(target)} />
     );
 
-    const spotlights = this.props.spotlights.map(querySelector => (
+    let spotlightElements = spotlights.map(querySelector => (
       <Spotlight key={querySelector} styles={this.getSpotlightStyles(querySelector)} />
-    ))
+    ));
 
     // Hack for Safari bug with mix-blend-mode with z-index
     if (getBrowser() === 'safari') {
       const { mixBlendMode, zIndex, ...safarOverlay } = stylesOverlay;
 
       spotlight = <div style={{ ...safarOverlay }}>{spotlight}</div>;
+      spotlightElements = <div style={{ ...safarOverlay }}>{spotlightElements}</div>;
       delete stylesOverlay.backgroundColor;
     }
 
     return (
       <div className="react-joyride__overlay" style={stylesOverlay} onClick={onClickOverlay}>
         {spotlight}
-        {spotlights}
+        {spotlightElements}
       </div>
     );
   }
