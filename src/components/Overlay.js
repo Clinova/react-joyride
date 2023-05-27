@@ -221,8 +221,8 @@ export default class JoyrideOverlay extends React.Component {
     if (getBrowser() === 'safari') {
       const { mixBlendMode, zIndex, ...safarOverlay } = stylesOverlay;
 
-      spotlight = <div style={{ ...safarOverlay }}>{spotlight}</div>;
-      spotlightElements = <div style={{ ...safarOverlay }}>{spotlightElements}</div>;
+      // spotlight = <div style={{ ...safarOverlay }}>{spotlight}</div>;
+      // spotlightElements = <div style={{ ...safarOverlay }}>{spotlightElements}</div>;
       delete stylesOverlay.backgroundColor;
     }
 
