@@ -1017,7 +1017,7 @@ var buttonBase = {
   WebkitAppearance: 'none'
 };
 var spotlight = {
-  borderRadius: 4,
+  borderRadius: 8,
   position: 'absolute'
 };
 function getStyles() {

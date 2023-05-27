@@ -25,7 +25,7 @@ const buttonBase = {
 };
 
 const spotlight = {
-  borderRadius: 4,
+  borderRadius: 8,
   position: 'absolute',
 };
 
