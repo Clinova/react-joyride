@@ -1676,6 +1676,10 @@ var JoyrideOverlay = /*#__PURE__*/function (_React$Component) {
         }, spotlightElements);
         delete stylesOverlay.backgroundColor;
       }
+      console.log({
+        spotlights: spotlights,
+        spotlightElements: spotlightElements
+      });
       return /*#__PURE__*/React.createElement("div", {
         className: "react-joyride__overlay",
         style: stylesOverlay,

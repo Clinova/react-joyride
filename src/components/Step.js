@@ -72,6 +72,7 @@ export default class JoyrideStep extends React.Component {
       ]),
       spotlightClicks: PropTypes.bool,
       spotlightPadding: PropTypes.number,
+      spotlights: PropTypes.array,
       styles: PropTypes.object,
       target: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
       title: PropTypes.node,

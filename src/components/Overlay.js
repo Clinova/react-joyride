@@ -34,9 +34,9 @@ export default class JoyrideOverlay extends React.Component {
     lifecycle: PropTypes.string.isRequired,
     onClickOverlay: PropTypes.func.isRequired,
     placement: PropTypes.string.isRequired,
-    spotlights: PropTypes.array,
     spotlightClicks: PropTypes.bool.isRequired,
     spotlightPadding: PropTypes.number,
+    spotlights: PropTypes.array,
     styles: PropTypes.object.isRequired,
     target: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
   };
